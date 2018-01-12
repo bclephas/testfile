@@ -99,5 +99,6 @@ fails.
 Value can be a string or a list of strings representing the commands to execute.
 
 * Multiline strings are not supported at this time.
-* Complex steps are best invoked from a separate script
+* Complex steps are best invoked from a separate script. External scripts are
+  executed with /bin/sh.
 
