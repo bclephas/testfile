@@ -1,0 +1,19 @@
+fixture:
+  onetime_setup:
+    - echo "One time Setup"
+  onetime_teardown:
+    - echo "One time Teardown"
+  setup:
+    - echo "Setup"
+  teardown:
+    - echo "Teardown"
+tests:
+  - test: "Test 1"
+    description: "simple"
+    steps:
+      - echo "Foo"
+      - echo "Bar"
+      - exit 1
+  - test: "Test 2"
+    steps: echo "Baz"
+
