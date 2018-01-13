@@ -34,10 +34,12 @@ def _execute_commandline(script):
     return (out.strip(), err.strip(), process.returncode)
 
 def _print_verbose(verbose, out, err, returncode):
+    '''Prints additional information for easier debugging'''
     if verbose:
         print('Out: [\n' + out + '\n]\nErr: [\n' + err + '\n]\nReturncode: ' + str(returncode))
 
-def _print_result(test, returncode):
+def _print_result(test, step, returncode):
+    '''Prints the result of the test case, using ANSI colors for improved visibility'''
     class ANSI(object):
         ESCAPE  = '\033[%sm'
         RESET   = ESCAPE %  '0'
@@ -56,8 +58,11 @@ def _print_result(test, returncode):
 
     result = ANSI.decorate(ANSI.GREEN, 'PASS') if returncode == 0 else ANSI.decorate(ANSI.RED, 'FAILED')
     print('{} ... {}'.format(test, result))
+    if returncode != 0:
+        print('Command \'{}\' failed; expected exitcode {}, but was {}'.format(step, 0, returncode))
 
 def _terminate_if_required(returncode):
+    '''When returncode is non-zero, terminate the script'''
     if returncode != 0:
         sys.exit(returncode)
 
@@ -104,7 +109,7 @@ def execute_testfile(config, verbose=False):
                 (out, err, returncode) = _execute_commandline(test_setup_script)
                 _print_verbose(verbose, out, err, returncode)
    
-            _print_result(test_description, test_returncode)
+            _print_result(test_description, test_script, test_returncode)
 
     # handle fixture's one time teardown
     if 'onetime_teardown' in fixture_config:
