@@ -120,19 +120,30 @@ def execute_testfile(config, verbose=False):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--file', dest='filename', default='Testfile')
+    parser.add_argument('-f', '--file', dest='filename', nargs='+', default='Testfile')
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, action='store_true')
     
     args = parser.parse_args()
 
-    if not os.path.isfile(args.filename):
-        print('Testfile not found' + os.linesep, file=sys.stderr)
-        parser.print_help()
-        sys.exit(1)
+    if isinstance(args.filename, basestring):
+        filenames = [args.filename]
+    elif isinstance(args.filename, list):
+        filenames = args.filename
+    else:
+        raise ValueError('filename argument should be a string or a list')
 
-    stream = file(args.filename, 'r')
-    config = yaml.load(stream) # Loader=yaml.Loader / yaml.SafeLoader
+    for filename in filenames:
+        if not os.path.isfile(filename):
+            print('{} not found{}'.format(filename, os.linesep), file=sys.stderr)
+            parser.print_help()
+            sys.exit(1)
 
-    returncode = execute_testfile(config, args.verbose)
-    sys.exit(returncode)
+        stream = file(filename, 'r')
+        config = yaml.load(stream) # Loader=yaml.Loader / yaml.SafeLoader
+
+        returncode = execute_testfile(config, args.verbose)
+        if returncode != 0:
+            sys.exit(returncode)
+
+    sys.exit(0)
 
