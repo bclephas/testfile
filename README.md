@@ -8,19 +8,19 @@ The Testfile is structured using keywords that are described below.
 
 # Example Testfile
 
-fixture:
-  onetime_setup: echo "Will execute at most once, before the first test"
-  setup:
-    - echo "Will execute for each test, as a sequence of commands"
-tests:
-  - test: "my test"
-    description: "Some comments about this test"
-    steps:
-      - echo "First step"
-      - echo "Second step"
-  - test: "another test"
-    steps:
-      - echo "First and only step of this test"
+    fixture:
+      onetime_setup: echo "Will execute at most once, before the first test"
+      setup:
+        - echo "Will execute for each test, as a sequence of commands"
+    tests:
+      - test: "my test"
+        description: "Some comments about this test"
+        steps:
+          - echo "First step"
+          - echo "Second step"
+      - test: "another test"
+        steps:
+          - echo "First and only step of this test"
 
 # Usage
 
@@ -36,17 +36,17 @@ invoke Testfile with a filename of choice.
 
 # Keywords
 
-|= Keyword        =|= Required =|= Description =|
-|------------------|------------|---------------|
-| fixture          | No         | Defines common properties for available test cases |
-| onetime_setup    | No         | Command executed once before running the first test case |
+| Keyword          | Required   | Description                                                        |
+|==================|============|====================================================================|
+| fixture          | No         | Defines common properties for available test cases                 |
+| onetime_setup    | No         | Command executed once before running the first test case           |
 | onetime_teardown | No         | Command executed once after running the last test case, guaranteed |
-| setup            | No         | Command executed at the start of each test case |
-| teardown         | No         | Command executed at the end of each test case, guaranteed |
-| tests            | Yes        | Test case definitions |
-| test             | No         | Single test case definitions |
-| description      | No         | Free format textual description of the test |
-| steps            | Yes        | List of commands to be executed |
+| setup            | No         | Command executed at the start of each test case                    |
+| teardown         | No         | Command executed at the end of each test case, guaranteed          |
+| tests            | Yes        | Test case definitions                                              |
+| test             | No         | Single test case definitions                                       |
+| description      | No         | Free format textual description of the test                        |
+| steps            | Yes        | List of commands to be executed                                    |
 
 ## Fixture (optional)
 
