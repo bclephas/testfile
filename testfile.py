@@ -74,10 +74,7 @@ def execute_testfile(config, verbose=False):
 
     tests = config.get('tests', [])
     for test in tests:
-        if 'description' in test:
-            test_description = "{} ({})".format(test['test'], test['description'])
-        else:
-            test_description = test['test']
+        test_description = test['test']
 
         try:
             returncode = 0

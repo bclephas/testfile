@@ -224,7 +224,7 @@ class Testfile_tests(unittest.TestCase):
             ]
         }
         testfile.execute_testfile(config, verbose=True)
-        mock_result.assert_has_calls([mock.call('test_1 (foobarbaz)', 0)])
+        mock_result.assert_has_calls([mock.call('test_1', 0)])
 
     @mock.patch('testfile._execute_commandline', return_value=('', '', 3))
     @mock.patch('testfile._print_verbose')
