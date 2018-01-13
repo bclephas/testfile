@@ -224,7 +224,7 @@ class Testfile_tests(unittest.TestCase):
             ]
         }
         testfile.execute_testfile(config, verbose=True)
-        mock_result.assert_has_calls([mock.call('test_1', 0)])
+        mock_result.assert_has_calls([mock.call('test_1', mock.ANY, 0)])
 
     @mock.patch('testfile._execute_commandline', return_value=('', '', 3))
     @mock.patch('testfile._print_verbose')
@@ -242,7 +242,7 @@ class Testfile_tests(unittest.TestCase):
             ]
         }
         testfile.execute_testfile(config, verbose=True)
-        mock_result.assert_has_calls([mock.call('test_1', 3)])
+        mock_result.assert_has_calls([mock.call('test_1', 'echo foo', 3)])
 
     @mock.patch('testfile._execute_commandline', return_value=('', '', 0))
     @mock.patch('testfile._print_verbose')
@@ -260,7 +260,7 @@ class Testfile_tests(unittest.TestCase):
             ]
         }
         testfile.execute_testfile(config, verbose=True)
-        mock_result.assert_has_calls([mock.call('test_1', 0)])
+        mock_result.assert_has_calls([mock.call('test_1', mock.ANY, 0)])
 
     @mock.patch('testfile._execute_commandline', side_effect=[('', '', 0), ('', '', 3)])
     @mock.patch('testfile._print_verbose')
@@ -284,7 +284,7 @@ class Testfile_tests(unittest.TestCase):
             ]
         }
         testfile.execute_testfile(config, verbose=True)
-        mock_result.assert_has_calls([mock.call('test_1', 0), mock.call('test_2', 3)])
+        mock_result.assert_has_calls([mock.call('test_1', mock.ANY, 0), mock.call('test_2', 'echo bar', 3)])
 
     @mock.patch('testfile._execute_commandline', return_value=('', '', 0))
     @mock.patch('testfile._print_verbose')

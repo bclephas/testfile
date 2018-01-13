@@ -7,8 +7,8 @@ import os
 import subprocess
 import sys
 
+# Facilitate having a locally available PyYAML instance
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'pyyaml/lib/')))
-#sys.path.insert(0, "pyyaml/lib/")
 import yaml
 
 def _build_commandline(commands):
@@ -141,7 +141,7 @@ if __name__ == '__main__':
             sys.exit(1)
 
         stream = file(filename, 'r')
-        config = yaml.load(stream) # Loader=yaml.Loader / yaml.SafeLoader
+        config = yaml.load(stream)
 
         returncode = execute_testfile(config, args.verbose)
         if returncode != 0:
