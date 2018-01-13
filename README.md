@@ -37,7 +37,7 @@ invoke Testfile with a filename of choice.
 # Keywords
 
 | Keyword          | Required   | Description                                                        |
-|==================|============|====================================================================|
+|------------------|------------|--------------------------------------------------------------------|
 | fixture          | No         | Defines common properties for available test cases                 |
 | onetime_setup    | No         | Command executed once before running the first test case           |
 | onetime_teardown | No         | Command executed once after running the last test case, guaranteed |
