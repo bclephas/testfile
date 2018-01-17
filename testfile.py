@@ -30,7 +30,7 @@ def _execute_commandline(script):
                                stderr=subprocess.PIPE)
 
     (out, err) = process.communicate()
-    
+
     return (out.strip(), err.strip(), process.returncode)
 
 def _print_verbose(verbose, out, err, returncode):
@@ -38,7 +38,7 @@ def _print_verbose(verbose, out, err, returncode):
     if verbose:
         print('Out: [\n' + out + '\n]\nErr: [\n' + err + '\n]\nReturncode: ' + str(returncode))
 
-def _print_result(test, step, returncode):
+def _print_result(test, step, returncode, ignored=False):
     '''Prints the result of the test case, using ANSI colors for improved visibility'''
     class ANSI(object):
         ESCAPE  = '\033[%sm'
@@ -55,6 +55,11 @@ def _print_result(test, step, returncode):
         @staticmethod
         def decorate(fmt, msg):
             return fmt + msg + ANSI.RESET
+
+    if ignored:
+        result = ANSI.decorate(ANSI.YELLOW, 'DISABLED')
+        print('{} ... {}'.format(test, result))
+        return
 
     result = ANSI.decorate(ANSI.GREEN, 'PASS') if returncode == 0 else ANSI.decorate(ANSI.RED, 'FAILED')
     print('{} ... {}'.format(test, result))
@@ -79,10 +84,16 @@ def execute_testfile(config, verbose=False):
 
     tests = config.get('tests', [])
     for test in tests:
+        disabled_test = test.get('disabled_test', None)
+        if disabled_test:
+            _print_result(disabled_test, '', 0, ignored=True)
+            continue
+
         test_description = test['test']
 
         try:
             returncode = 0
+            testscript = ''
 
             # handle fixture's setup
             if 'setup' in fixture_config:
@@ -108,7 +119,7 @@ def execute_testfile(config, verbose=False):
                 test_setup_script = _build_commandline(fixture_config['teardown'])
                 (out, err, returncode) = _execute_commandline(test_setup_script)
                 _print_verbose(verbose, out, err, returncode)
-   
+
             _print_result(test_description, test_script, test_returncode)
 
     # handle fixture's one time teardown
@@ -124,7 +135,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--file', dest='filename', nargs='+', default='Testfile')
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, action='store_true')
-    
+
     args = parser.parse_args()
 
     if isinstance(args.filename, basestring):

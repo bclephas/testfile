@@ -306,6 +306,55 @@ class Testfile_tests(unittest.TestCase):
         testfile.execute_testfile(config, verbose=True)
         mock_execute.assert_has_calls([mock.call('echo foo;echo bar;echo baz')])
 
+    @mock.patch('testfile._execute_commandline', return_value=('', '', 0))
+    @mock.patch('testfile._print_verbose')
+    @mock.patch('testfile._print_result')
+    @mock.patch('testfile._terminate_if_required')
+    def test_disabled_tests__correct_results_shown(self, mock_term, mock_result, mock_verbose, mock_execute):
+        config = {
+            'tests': [
+            {
+                'disabled_test': 'test_1',
+                'steps': [
+                    'echo foo',
+                ],
+            },
+            {
+                'test': 'test_2',
+                'steps': [
+                    'echo bar',
+                ]
+            },
+            ]
+        }
+        testfile.execute_testfile(config, verbose=True)
+        mock_result.assert_has_calls([mock.call('test_1', '', 0, ignored=True),
+                                      mock.call('test_2', 'echo bar', 0)])
+
+    @mock.patch('testfile._execute_commandline', return_value=('', '', 0))
+    @mock.patch('testfile._print_verbose')
+    @mock.patch('testfile._print_result')
+    @mock.patch('testfile._terminate_if_required')
+    def test_disabled_tests__setup_and_teardown_not_executed(self, mock_term, mock_result, mock_verbose, mock_execute):
+        config = {
+            'tests': [
+            {
+                'disabled_test': 'test_1',
+                'steps': [
+                    'echo foo',
+                ],
+            },
+            {
+                'test': 'test_2',
+                'steps': [
+                    'echo bar',
+                ]
+            },
+            ]
+        }
+        testfile.execute_testfile(config)
+        mock_verbose.assert_has_calls([mock.call(False, '', '', 0)])
+
 if __name__ == '__main__':
     unittest.main()
 

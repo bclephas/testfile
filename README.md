@@ -45,6 +45,7 @@ invoke Testfile with a filename of choice.
 | teardown         | No         | Command executed at the end of each test case, guaranteed          |
 | tests            | Yes        | Test case definitions                                              |
 | test             | No         | Single test case definitions                                       |
+| disabled_test    | No         | Disable this single test case definitions                          |
 | description      | No         | Free format textual description of the test                        |
 | steps            | Yes        | List of commands to be executed                                    |
 
@@ -85,6 +86,10 @@ Recommended is to group related test cases together in one file.
 ## Test (optional)
 
 Defines a single test case
+
+## Disabled_test (optional)
+
+Defines a disabled single test case. This test is not executed.
 
 ## Description (optional)
 
